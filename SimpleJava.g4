@@ -1,62 +1,61 @@
-grammar SimpleJava;
-
-/* keywords */
-class : 'class';
-public : 'public';
-static : 'static';
-void : 'void';
-main : 'main';
+ grammar SimpleJava;
+ /* keywords */
+Class : 'class';
+Public : 'public';
+Static : 'static';
+Void : 'void';
+Main : 'main';
 String : 'String';
-extends : 'extends';
-return : 'return';
-int : 'int';
-if : 'if';
-else : 'else';
-while : 'while';
+Extends : 'extends';
+Return : 'return';
+Int : 'int';
+If : 'if';
+Else : 'else';
+While : 'while';
 
 /* operators */
-add : '+';
-subtract : '-';
-multiply : '*';
-divide : '/';
+Add : '+';
+Subtract : '-';
+Multiply : '*';
+Divide : '/';
 
 /* punctuation */
-semicolon : ';';
-comma : ',';
-leftParen : '(';
-rightParen : ')';
-leftCurly : '{';
-rightCurly : '}';
-equals : '=';
-greaterThan : '>';
-lessThan : '<';
-doubleQuote : '"';
+Semicolon : ';';
+Comma : ',';
+LeftParen : '(';
+RightParen : ')';
+LeftCurly : '{';
+RightCurly : '}';
+Equals : '=';
+GreaterThan : '>';
+LessThan : '<';
+DoubleQuote : '"';
 
 /* literals */
-stringLiteral : doubleQuote (~["\\] | "\\\" | "\\\\])* doubleQuote;
-integerLiteral : [0-9]+;
+
+IntegerLiteral : [0-9]+;
 
 /* identifiers */
-identifier : [a-zA-Z_] [a-zA-Z_0-9]*;
+Identifier : [a-zA-Z_] [a-zA-Z_0-9]*;
 
 /* rules */
 compilationUnit : classDeclaration;
-classDeclaration : class identifier classBody;
-classBody : leftCurly classBodyDeclaration* rightCurly;
+classDeclaration : Class Identifier classBody;
+classBody : LeftCurly classBodyDeclaration* RightCurly;
 classBodyDeclaration : methodDeclaration | fieldDeclaration;
-fieldDeclaration : type identifier semicolon;
-methodDeclaration : public static void main leftParen String leftSquareBracket rightSquareBracket identifier rightParen methodBody;
-methodBody : leftCurly statement* rightCurly;
-type : int | identifier;
+fieldDeclaration : type Identifier Semicolon;
+methodDeclaration : Public Static Void Main LeftParen String LeftSquareBracket RightSquareBracket Identifier RightParen methodBody;
+methodBody : LeftCurly statement* RightCurly;
+type : Int | Identifier;
 
 statement : assignmentStatement | ifStatement | whileStatement | returnStatement | expressionStatement;
-assignmentStatement : identifier equals expression semicolon;
-ifStatement : if leftParen expression rightParen statement (else statement)?;
-whileStatement : while leftParen expression rightParen statement;
-returnStatement : return expression? semicolon;
-expressionStatement : expression semicolon;
+assignmentStatement : Identifier Equals expression Semicolon;
+ifStatement : If LeftParen expression RightParen statement (Else statement)?;
+whileStatement : While LeftParen expression RightParen statement;
+returnStatement : Return expression? Semicolon;
+expressionStatement : expression Semicolon;
 
 expression : additiveExpression;
-additiveExpression : multiplicativeExpression (add multiplicativeExpression)*;
-multiplicativeExpression : primaryExpression (multiply primaryExpression)*;
-primaryExpression : integerLiteral | stringLiteral | identifier | leftParen expression rightParen;
+additiveExpression : multiplicativeExpression (Add multiplicativeExpression)*;
+multiplicativeExpression : primaryExpression (Multiply primaryExpression)*;
+primaryExpression : IntegerLiteral | StringLiteral | Identifier | LeftParen expression RightParen;
