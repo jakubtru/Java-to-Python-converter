@@ -52,7 +52,7 @@ FloatLiteral: Digit+ '.' Digit+;
 CharLiteral: '\'' ~('\'' | '\\') '\'';
 BoolLiteral: 'true' | 'false';
 StringLiteral: '"' (~('"' | '\\') | EscapeSequence)* '"';
-
+Whitespace: [ \t\r\n\u000C]+ -> skip;
 fragment Digit: [0-9];
 fragment EscapeSequence: '\\' [btnfr"'\\"];
 
@@ -65,31 +65,38 @@ Identifier : [a-zA-Z_] [a-zA-Z_0-9]*;
 compilationUnit : classDeclaration;
 
 /* deklaracja składa się z słowa kluczowego 'class', identyfikatora klasy i ciała klasy */
-classDeclaration : Class Space Identifier classBody ;
+classDeclaration : Class Identifier classBody ;
 
 /* ciało klasy jest otoczone klamrami i składa się z deklaracji pól i metod*/
-classBody : LeftCurly NewLine classBodyDeclaration* NewLine RightCurly;
+classBody : LeftCurly classBodyDeclaration RightCurly;
 
 /* Deklaracja w klasie może być deklaracją metody lub pola. */
-classBodyDeclaration : methodDeclaration | fieldDeclaration;
+classBodyDeclaration : (methodDeclaration | fieldDeclaration)*;
 
 /* Deklaracja pola składa się z typu, identyfikatora i średnika */
-fieldDeclaration : type Identifier Semicolon;
+fieldDeclaration : type Identifier Semicolon (fieldDeclaration|methodDeclaration)* | type  assignmentStatement (fieldDeclaration|methodDeclaration)*;
 
 /* deklaracja metody main musi mieć określony zestaw argumentów i zwracać typ void */
-methodDeclaration : Public Space Static Space Void Space Main LeftParen String LeftSquareBracket RightSquareBracket Identifier RightParen methodBody;
+methodDeclaration : Public Static Void Main LeftParen String LeftSquareBracket RightSquareBracket Identifier RightParen methodBody;
 
 /* ciało metody składa się z instrukcji i otoczone jest klamrami */
-methodBody : LeftCurly NewLine statement* RightCurly;
+methodBody : LeftCurly statement* RightCurly;
 
 /* typ może być typem wbudowanym lub identyfikatorem użytkownika */
 type : Int | Char | Bool | Float | String | Identifier;
 
-/* instrukcja składa się z przypisania, instrukcji warunkowej, instrukcji pętli, instrukcji return lub wyrażenia */
-statement : (assignmentStatement | ifStatement | whileStatement | returnStatement | expressionStatement) NewLine;
+/* inkrementacja zmiennej */
+incrementStatement : Identifier Plus Plus Semicolon;
+
+/* dekrementacja zmiennej */
+decrementStatement : Identifier Minus Minus Semicolon;
+
+/* instrukcja składa się z przypisania, instrukcji warunkowej, instrukcji pętli, instrukcji return, wyrażenia, inkrementacji lub dekrementacji */
+statement : (assignmentStatement | ifStatement | whileStatement | returnStatement | expressionStatement | incrementStatement | decrementStatement) NewLine;
+
 
 /* przypisanie zmiennej wartości składa się z identyfikatora, znaku równości, wyrażenia i średnika */
-assignmentStatement : Identifier Equals expression Semicolon;
+assignmentStatement : Identifier Equals expression Semicolon | Identifier Equals (CharLiteral|FloatLiteral|StringLiteral|IntegerLiteral|BoolLiteral)Semicolon;
 
 
 /* instrukcja warunkowa składa się z instrukcji if i opcjonalnej instrukcji else */
@@ -115,3 +122,5 @@ mathExpression : unaryExpression ( ( '+' | '-' | '*' | '/' ) unaryExpression )*;
 unaryExpression : primaryExpression | ( ( '+' | '-' ) unaryExpression );
 
 primaryExpression : IntegerLiteral | FloatLiteral | CharLiteral | BoolLiteral | StringLiteral | Identifier | LeftParen expression RightParen;
+
+
