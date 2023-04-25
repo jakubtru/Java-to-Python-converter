@@ -16,7 +16,6 @@ Return : 'return';
 If : 'if';
 Else : 'else';
 While : 'while';
-Space: ' ';
 
 /* operatory i znaki interpunkcyjne */
 Plus : '+';
@@ -62,10 +61,10 @@ Identifier : [a-zA-Z_] [a-zA-Z_0-9]*;
 /* reguły */
 
 /* deklaracja klasy*/
-compilationUnit : classDeclaration;
+compilationUnit : classDeclaration* EOF;
 
 /* deklaracja składa się z słowa kluczowego 'class', identyfikatora klasy i ciała klasy */
-classDeclaration : Class Identifier classBody ;
+classDeclaration : Class Identifier classBody;
 
 /* ciało klasy jest otoczone klamrami i składa się z deklaracji pól i metod*/
 classBody : LeftCurly classBodyDeclaration RightCurly;

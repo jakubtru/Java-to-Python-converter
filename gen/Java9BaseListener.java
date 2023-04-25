@@ -1,4 +1,4 @@
-// Generated from Java9.g4 by ANTLR 4.12.0
+// Generated from C:/Users/jtrus/studies/Java-to-Python-converter/src/main/java\Java9.g4 by ANTLR 4.12.0
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
