@@ -1,4 +1,4 @@
-// Generated from C:/Users/jtrus/studies/Java-to-Python-converter\SimpleJava.g4 by ANTLR 4.12.0
+// Generated from C:/Users/jtrus/studies/kompilatory/Java-to-Python-converter\SimpleJava.g4 by ANTLR 4.12.0
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -70,6 +70,12 @@ public interface SimpleJavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDecrementStatement(SimpleJavaParser.DecrementStatementContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SimpleJavaParser#declarationStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDeclarationStatement(SimpleJavaParser.DeclarationStatementContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SimpleJavaParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -81,6 +87,12 @@ public interface SimpleJavaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitAssignmentStatement(SimpleJavaParser.AssignmentStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SimpleJavaParser#printStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrintStatement(SimpleJavaParser.PrintStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SimpleJavaParser#ifStatement}.
 	 * @param ctx the parse tree

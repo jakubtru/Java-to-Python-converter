@@ -1,4 +1,4 @@
-// Generated from C:/Users/jtrus/studies/Java-to-Python-converter\SimpleJava.g4 by ANTLR 4.12.0
+// Generated from C:/Users/jtrus/studies/kompilatory/Java-to-Python-converter\SimpleJava.g4 by ANTLR 4.12.0
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -107,6 +107,16 @@ public interface SimpleJavaListener extends ParseTreeListener {
 	 */
 	void exitDecrementStatement(SimpleJavaParser.DecrementStatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SimpleJavaParser#declarationStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeclarationStatement(SimpleJavaParser.DeclarationStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpleJavaParser#declarationStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeclarationStatement(SimpleJavaParser.DeclarationStatementContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SimpleJavaParser#statement}.
 	 * @param ctx the parse tree
 	 */
@@ -126,6 +136,16 @@ public interface SimpleJavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAssignmentStatement(SimpleJavaParser.AssignmentStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SimpleJavaParser#printStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrintStatement(SimpleJavaParser.PrintStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpleJavaParser#printStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrintStatement(SimpleJavaParser.PrintStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SimpleJavaParser#ifStatement}.
 	 * @param ctx the parse tree

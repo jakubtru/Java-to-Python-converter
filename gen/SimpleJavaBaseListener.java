@@ -1,4 +1,4 @@
-// Generated from C:/Users/jtrus/studies/Java-to-Python-converter\SimpleJava.g4 by ANTLR 4.12.0
+// Generated from C:/Users/jtrus/studies/kompilatory/Java-to-Python-converter\SimpleJava.g4 by ANTLR 4.12.0
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -136,6 +136,18 @@ public class SimpleJavaBaseListener implements SimpleJavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterDeclarationStatement(SimpleJavaParser.DeclarationStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDeclarationStatement(SimpleJavaParser.DeclarationStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterStatement(SimpleJavaParser.StatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -155,6 +167,18 @@ public class SimpleJavaBaseListener implements SimpleJavaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAssignmentStatement(SimpleJavaParser.AssignmentStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPrintStatement(SimpleJavaParser.PrintStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrintStatement(SimpleJavaParser.PrintStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

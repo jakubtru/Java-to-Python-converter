@@ -43,7 +43,6 @@ LeftCurly : '{';
 RightCurly : '}';
 LeftSquareBracket: '[';
 RightSquareBracket: ']';
-NewLine: '\n';
 
 
 /* literały */
@@ -69,7 +68,7 @@ compilationUnit : classDeclaration* EOF;
 classDeclaration : Public Class Identifier classBody;
 
 /* ciało klasy jest otoczone klamrami i składa się z deklaracji pól i metod*/
-classBody : LeftCurly classBodyDeclaration (RightCurly | NewLine RightCurly);
+classBody : LeftCurly classBodyDeclaration (RightCurly | RightCurly);
 
 /* Deklaracja w klasie może być deklaracją metody lub pola. */
 classBodyDeclaration : (methodDeclaration | fieldDeclaration)*;
@@ -81,7 +80,7 @@ fieldDeclaration : type Identifier Semicolon (fieldDeclaration|methodDeclaration
 methodDeclaration : (Public Static Void Main LeftParen String LeftSquareBracket RightSquareBracket Identifier RightParen methodBody)|(Public (Void|Int|String|Char|Bool|Float) Identifier LeftParen  (Void|Int|String|Char|Bool|Float) Identifier RightParen methodBody);
 
 /* ciało metody składa się z instrukcji i otoczone jest klamrami */
-methodBody : LeftCurly statement* (RightCurly| NewLine RightCurly);
+methodBody : LeftCurly statement* (RightCurly| RightCurly);
 
 /* typ może być typem wbudowanym lub identyfikatorem użytkownika */
 type : Int | Char | Bool | Float | String | Identifier;
@@ -102,7 +101,7 @@ assignmentStatement : Identifier Equals expression Semicolon | Identifier Equals
 
 printStatement : Print LeftParen StringLiteral RightParen Semicolon;
 /* instrukcja warunkowa składa się z instrukcji if i opcjonalnej instrukcji else */
-ifStatement : If LeftParen expression RightParen statement (Else statement)?;
+ifStatement : If LeftParen expression RightParen LeftCurly statement RightCurly (Else LeftCurly statement RightCurly)?;
 
 /* instrukcja pętli składa się z instrukcji while, warunku i instrukcji pętli */
 whileStatement : While LeftParen expression RightParen statement;
