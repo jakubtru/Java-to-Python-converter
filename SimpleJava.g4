@@ -77,7 +77,11 @@ classBodyDeclaration : (methodDeclaration | fieldDeclaration)*;
 fieldDeclaration : type Identifier Semicolon (fieldDeclaration|methodDeclaration)* | type  assignmentStatement (fieldDeclaration|methodDeclaration)*;
 
 /* deklaracja metody main musi mieć określony zestaw argumentów i zwracać typ void */
-methodDeclaration : (Public Static Void Main LeftParen String LeftSquareBracket RightSquareBracket Identifier RightParen methodBody)|(Public (Void|Int|String|Char|Bool|Float) Identifier LeftParen  (Void|Int|String|Char|Bool|Float) Identifier RightParen methodBody);
+methodDeclaration : mainMethodDeclaration|normalMethodDeclaration;
+
+normalMethodDeclaration : Public? Static? (Void|Int|String|Char|Bool|Float) Identifier LeftParen  (Void|Int|String|Char|Bool|Float) Identifier RightParen methodBody;
+
+mainMethodDeclaration : Public Static Void Main LeftParen String LeftSquareBracket RightSquareBracket Identifier RightParen methodBody;
 
 /* ciało metody składa się z instrukcji i otoczone jest klamrami */
 methodBody : LeftCurly statement* (RightCurly| RightCurly);
