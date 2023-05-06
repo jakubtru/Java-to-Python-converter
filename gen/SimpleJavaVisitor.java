@@ -1,4 +1,4 @@
-// Generated from C:/Users/jtrus/studies/kompilatory/Java-to-Python-converter\SimpleJava.g4 by ANTLR 4.12.0
+// Generated from C:/Users/milsm/IdeaProjects/Java-to-Python-converter/src/main/antlr\SimpleJava.g4 by ANTLR 4.12.0
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -45,6 +45,18 @@ public interface SimpleJavaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMethodDeclaration(SimpleJavaParser.MethodDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SimpleJavaParser#normalMethodDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNormalMethodDeclaration(SimpleJavaParser.NormalMethodDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SimpleJavaParser#mainMethodDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMainMethodDeclaration(SimpleJavaParser.MainMethodDeclarationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SimpleJavaParser#methodBody}.
 	 * @param ctx the parse tree

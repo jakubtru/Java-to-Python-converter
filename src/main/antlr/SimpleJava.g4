@@ -9,7 +9,7 @@ Main : 'main';
 String: 'String';
 Int: 'int';
 Char: 'char';
-Bool: 'bool';
+Bool: 'boolean';
 Float: 'float';
 Extends : 'extends';
 Return : 'return';
@@ -34,6 +34,8 @@ NotEqual: '!=';
 And: '&&';
 Or: '||';
 Dot: '.';
+Increment: '++';
+Decrement: '--';
 
 Semicolon : ';';
 Comma : ',';
@@ -73,13 +75,14 @@ classBody : LeftCurly classBodyDeclaration (RightCurly | RightCurly);
 /* Deklaracja w klasie może być deklaracją metody lub pola. */
 classBodyDeclaration : (methodDeclaration | fieldDeclaration)*;
 
+
 /* Deklaracja pola składa się z typu, identyfikatora i średnika */
 fieldDeclaration : type Identifier Semicolon (fieldDeclaration|methodDeclaration)* | type  assignmentStatement (fieldDeclaration|methodDeclaration)*;
 
 /* deklaracja metody main musi mieć określony zestaw argumentów i zwracać typ void */
 methodDeclaration : mainMethodDeclaration|normalMethodDeclaration;
 
-normalMethodDeclaration : Public? Static? (Void|Int|String|Char|Bool|Float) Identifier LeftParen  (Void|Int|String|Char|Bool|Float) Identifier RightParen methodBody;
+normalMethodDeclaration : Public? Static? (Void|Int|String|Char|Bool|Float) Identifier LeftParen  (Void|Int|String|Char|Bool|Float) Identifier (Comma (Void|Int|String|Char|Bool|Float) Identifier)*  RightParen methodBody;
 
 mainMethodDeclaration : Public Static Void Main LeftParen String LeftSquareBracket RightSquareBracket Identifier RightParen methodBody;
 
@@ -90,10 +93,10 @@ methodBody : LeftCurly statement* (RightCurly| RightCurly);
 type : Int | Char | Bool | Float | String | Identifier;
 
 /* inkrementacja zmiennej */
-incrementStatement : Identifier Plus Plus Semicolon;
+incrementStatement : Identifier Increment Semicolon;
 
 /* dekrementacja zmiennej */
-decrementStatement : Identifier Minus Minus Semicolon;
+decrementStatement : Identifier Decrement Semicolon;
 
 declarationStatement : type Identifier Equals primaryExpression Semicolon;
 /* instrukcja składa się z przypisania, instrukcji warunkowej, instrukcji pętli, instrukcji return, wyrażenia, inkrementacji lub dekrementacji */
@@ -103,7 +106,7 @@ statement : (declarationStatement | assignmentStatement | ifStatement | whileSta
 /* przypisanie zmiennej wartości składa się z identyfikatora, znaku równości, wyrażenia i średnika */
 assignmentStatement : Identifier Equals expression Semicolon | Identifier Equals (CharLiteral|FloatLiteral|StringLiteral|IntegerLiteral|BoolLiteral)Semicolon;
 
-printStatement : Print LeftParen StringLiteral RightParen Semicolon;
+printStatement : Print LeftParen (StringLiteral|Identifier) RightParen Semicolon;
 /* instrukcja warunkowa składa się z instrukcji if i opcjonalnej instrukcji else */
 ifStatement : If LeftParen expression RightParen LeftCurly statement RightCurly (Else LeftCurly statement RightCurly)?;
 

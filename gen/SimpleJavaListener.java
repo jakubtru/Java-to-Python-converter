@@ -1,4 +1,4 @@
-// Generated from C:/Users/jtrus/studies/kompilatory/Java-to-Python-converter\SimpleJava.g4 by ANTLR 4.12.0
+// Generated from C:/Users/milsm/IdeaProjects/Java-to-Python-converter/src/main/antlr\SimpleJava.g4 by ANTLR 4.12.0
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -66,6 +66,26 @@ public interface SimpleJavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMethodDeclaration(SimpleJavaParser.MethodDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SimpleJavaParser#normalMethodDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterNormalMethodDeclaration(SimpleJavaParser.NormalMethodDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpleJavaParser#normalMethodDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitNormalMethodDeclaration(SimpleJavaParser.NormalMethodDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SimpleJavaParser#mainMethodDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterMainMethodDeclaration(SimpleJavaParser.MainMethodDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpleJavaParser#mainMethodDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitMainMethodDeclaration(SimpleJavaParser.MainMethodDeclarationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SimpleJavaParser#methodBody}.
 	 * @param ctx the parse tree
