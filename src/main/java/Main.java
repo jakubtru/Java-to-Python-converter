@@ -1,39 +1,28 @@
+import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 public class Main {
 
-    public static void main(String[] args) {
-        String javaCode = "public class HelloWorld{"+
-                "String slowo;"+
-//                "HelloWorld(int k){"+
-//                "}"+
-                "public void funkcja(String s){"+
-                "int x = 5;"+
-                "x++;"+
-                "x--;"+
-                "System.out.println(s);"+
-                "}"+
-                "public static void main(String[] args){"+
-                "System.out.println(\"Hello World\");"+
-                "}"+
-                "}"+
-                "public class Goodbye{" +
-                "boolean b;}" ;
+    public static void main(String[] args) throws IOException {
+        CharStream input = CharStreams.fromFileName("/Users/jangi/IdeaProjects/Java-to-Python-converter/src/main/java/Test.java");
 
-        SimpleJavaLexer lexer = new SimpleJavaLexer(CharStreams.fromString(javaCode));
+        SimpleJavaLexer lexer = new SimpleJavaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         SimpleJavaParser parser = new SimpleJavaParser(tokens);
         ParseTree tree = parser.compilationUnit();
 
         ParseTreeWalker walker = new ParseTreeWalker();
-        JavaToPythonConverter converter = new JavaToPythonConverter();
+
+        JavaToPythonConverter converter = new JavaToPythonConverter("PythonCode.py");
         walker.walk(converter, tree);
-        System.out.println(converter.getPythonCode());
+        converter.close();
+        //System.out.println(converter.getPythonCode());
 
 
 

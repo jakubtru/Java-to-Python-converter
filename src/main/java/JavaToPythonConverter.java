@@ -1,16 +1,25 @@
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.stream.Collectors;
-
+import java.io.PrintWriter;
 public class JavaToPythonConverter extends SimpleJavaBaseListener {
 
     private StringBuilder pythonCode = new StringBuilder();
+    private final PrintWriter writer;
+    private final String tab = "    ";
+
+    public JavaToPythonConverter(String outputFileName)throws IOException {
+        writer = new PrintWriter(new FileWriter(outputFileName));
+    }
 
     @Override
     public void enterClassDeclaration(SimpleJavaParser.ClassDeclarationContext ctx) {
-        pythonCode.append("class ").append(ctx.Identifier().getText()).append(":\n");
+        writer.println("class " + ctx.Identifier().getText() + ":");
     }
 
     @Override
@@ -19,12 +28,12 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
         String methodName = identifier[0];
         String methodArgs = Arrays.stream(identifier).skip(1).collect(Collectors.joining(","));
 //        String methodArgs = ctx.Identifier().toString().substring(1, ctx.Identifier().toString().length() - 1).replace(",", "").split(" ")[
-        pythonCode.append("    def ").append(methodName).append("(self, ").append(methodArgs).append("):\n");
+        writer.println(tab + "def "+ methodName + "(self, " + methodArgs + "):");
     }
 
     @Override
     public void enterMainMethodDeclaration(SimpleJavaParser.MainMethodDeclarationContext ctx) {
-        pythonCode.append("    def main(args):\n");
+        writer.println(tab + "def main(args):");
     }
     @Override
     public void exitMainMethodDeclaration(SimpleJavaParser.MainMethodDeclarationContext ctx){
@@ -39,16 +48,16 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
         }
         assert parent != null;
         String className = ((SimpleJavaParser.ClassDeclarationContext) parent).Identifier().getText();
-        pythonCode.append("\n    if __name__ == \"__main__\":\n").append("        ").append(className).append(".main(sys.argv[1:])\n");
+        writer.println("\nif __name__ == \"__main__\":\n" + "    " + className + ".main(sys.argv[1:])");
     }
 
     @Override
     public void enterPrintStatement(SimpleJavaParser.PrintStatementContext ctx) {
         if (ctx.StringLiteral() != null) {
-            pythonCode.append("        print(\"").append(ctx.getTokens(SimpleJavaParser.StringLiteral).stream().map(token -> token.getText().substring(1, token.getText().length() - 1)).collect(Collectors.joining(" + "))).append("\")\n");
+            writer.println(tab + tab + "print(\"" + ctx.getTokens(SimpleJavaParser.StringLiteral).stream().map(token -> token.getText().substring(1, token.getText().length() - 1)).collect(Collectors.joining(" + ")) + "\")");
         }
         else if (ctx.Identifier() != null) {
-            pythonCode.append("        print(").append(ctx.Identifier().getText()).append(")\n");
+            writer.println(tab + tab +"print(" + ctx.Identifier().getText() + ")");
         }
 
     }
@@ -57,14 +66,14 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
         String type = ctx.type().getText();
         String identifier = ctx.Identifier().getText();
         String expression = ctx.primaryExpression().getText();
-        pythonCode.append("        ").append(identifier).append(" = ").append(expression).append("\n");
+        writer.println(tab + tab + identifier + " = " + expression);
 
     }
     @Override
     public void enterAssignmentStatement(SimpleJavaParser.AssignmentStatementContext ctx) {
         String identifier = ctx.Identifier().getText();
         String expression = ctx.expression().getText();
-        pythonCode.append("        ").append(identifier).append(" = ").append(expression).append("\n");
+        writer.println(tab + tab + identifier + " = " + expression);
 
     }
     @Override
@@ -73,17 +82,17 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
         if (ctx.assignmentStatement()==null) {
             String identifier = ctx.Identifier().getText();
             if (type.equals("int") || type.equals("float")) {
-                pythonCode.append("    ").append(identifier).append(" = 0\n");
+                writer.println(tab + identifier + " = 0");
             }
             if (type.equals("char") || type.equals("String")) {
-                pythonCode.append("    ").append(identifier).append(" = \"\"\n");
+                writer.println(tab + identifier + " = \"\"");
             }
             if (type.equals("boolean")) {
-                pythonCode.append("    ").append(identifier).append(" = False\n");
+                writer.println(tab + identifier + " = False");
             }
         }
         else{
-            pythonCode.append(ctx.assignmentStatement().getText());
+            writer.println(ctx.assignmentStatement().getText());
         }
 
     }
@@ -91,14 +100,14 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
     @Override
     public void enterIncrementStatement(SimpleJavaParser.IncrementStatementContext ctx) {
 
-            pythonCode.append("        ").append(ctx.Identifier().getText()).append(" += 1\n");
+        writer.println(tab + tab +ctx.Identifier().getText() + " += 1");
 
 
     }
 
     @Override
     public void enterDecrementStatement(SimpleJavaParser.DecrementStatementContext ctx) {
-        pythonCode.append("        ").append(ctx.Identifier().getText()).append(" -= 1\n");
+        writer.println(tab + tab + ctx.Identifier().getText() + " -= 1");
     }
 
 
@@ -113,12 +122,16 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
 
     @Override
     public void exitClassDeclaration(SimpleJavaParser.ClassDeclarationContext ctx) {
-        pythonCode.append("\n");
+        writer.println("\n");
     }
 
     @Override
     public void exitNormalMethodDeclaration(SimpleJavaParser.NormalMethodDeclarationContext ctx) {
-        pythonCode.append("\n");
+        writer.println("\n");
+    }
+
+    public void close(){
+        writer.close();
     }
 //    @Override
 //    public void enterConstructorDeclaration(SimpleJavaParser.ConstructorDeclarationContext ctx){
