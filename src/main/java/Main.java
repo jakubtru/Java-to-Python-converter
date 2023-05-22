@@ -10,23 +10,8 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        CharStream input = CharStreams.fromFileName("/Users/jangi/IdeaProjects/Java-to-Python-converter/src/main/java/Test.java");
 
-        SimpleJavaLexer lexer = new SimpleJavaLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        SimpleJavaParser parser = new SimpleJavaParser(tokens);
-        ParseTree tree = parser.compilationUnit();
-
-        ParseTreeWalker walker = new ParseTreeWalker();
-
-        JavaToPythonConverter converter = new JavaToPythonConverter("PythonCode.py");
-        walker.walk(converter, tree);
-        converter.close();
-        //System.out.println(converter.getPythonCode());
-
-
-
-
+        new GUI();
 
     }
 }
