@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 public class GUI extends JFrame implements ActionListener {
-    private static final int FRAME_WIDTH = 500;
+    private static final int FRAME_WIDTH = 1500;
     private static final int FRAME_HEIGHT = 500;
 
     private JTextArea inTxtArea;

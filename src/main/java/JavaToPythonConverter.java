@@ -18,12 +18,16 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
         pythonCode = new StringBuilder();
     }
 
+    @Override public void enterCompilationUnit(SimpleJavaParser.CompilationUnitContext ctx) {
+        pythonCode.append("import sys\n\n");
+        writer.write(pythonCode.toString());
+    }
+
     @Override
     public void enterClassDeclaration(SimpleJavaParser.ClassDeclarationContext ctx) {
 //        writer.println("class " + ctx.Identifier().getText() + ":");
         pythonCode.append("class ").append(ctx.Identifier().getText()).append(":\n");
         writer.write(pythonCode.toString());
-
     }
 
     @Override
@@ -94,7 +98,7 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
     public void enterAssignmentStatement(SimpleJavaParser.AssignmentStatementContext ctx) {
         String identifier = ctx.Identifier().getText();
         String expression = ctx.expression().getText();
-        pythonCode.append(tab).append(tab).append(identifier).append(" = ").append(expression).append("\n");
+        pythonCode.append(tab).append(identifier).append(" = ").append(expression).append("\n");
         writer.write(pythonCode.toString());
 //        writer.println(tab + tab + identifier + " = " + expression);
 
@@ -105,24 +109,24 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
         if (ctx.assignmentStatement()==null) {
             String identifier = ctx.Identifier().getText();
             if (type.equals("int") || type.equals("float")) {
-                pythonCode.append(tab).append(tab).append(identifier).append(" = 0\n");
+                pythonCode.append(tab).append(identifier).append(" = 0\n");
 //                writer.println(tab + identifier + " = 0");
                 writer.write(pythonCode.toString());
             }
             if (type.equals("char") || type.equals("String")) {
 //                writer.println(tab + identifier + " = \"\"");
-                pythonCode.append(tab).append(tab).append(identifier).append(" = \"\"\n");
+                pythonCode.append(tab).append(identifier).append(" = \"\"\n");
                 writer.write(pythonCode.toString());
             }
             if (type.equals("boolean")) {
 //                writer.println(tab + identifier + " = False");
-                pythonCode.append(tab).append(tab).append(identifier).append(" = False\n");
+                pythonCode.append(tab).append(identifier).append(" = False\n");
                 writer.write(pythonCode.toString());
             }
         }
         else{
-            pythonCode.append(ctx.assignmentStatement().getText()).append("\n");
-            writer.write(pythonCode.toString());
+            //pythonCode.append(ctx.assignmentStatement().getText()).append("\n");
+            //writer.write(pythonCode.toString());
 //            writer.println(ctx.assignmentStatement().getText());
         }
 
