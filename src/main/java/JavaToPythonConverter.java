@@ -12,6 +12,7 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
     private StringBuilder pythonCode;
     private final PrintWriter writer;
     private final String tab = "    ";
+    private int indentationLevel = 0;
 
     public JavaToPythonConverter(String outputFileName)throws IOException {
         writer = new PrintWriter(new FileWriter(outputFileName));
@@ -28,6 +29,7 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
 //        writer.println("class " + ctx.Identifier().getText() + ":");
         pythonCode.append("class ").append(ctx.Identifier().getText()).append(":\n");
         writer.write(pythonCode.toString());
+
     }
 
     @Override
@@ -73,13 +75,14 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
         if (ctx.StringLiteral() != null) {
 //            writer.println(tab + tab + "print(\"" + ctx.getTokens(SimpleJavaParser.StringLiteral).stream().map(token -> token.getText().substring(1, token.getText().length() - 1)).collect(Collectors.joining(" + ")) + "\")");
 //
-            pythonCode.append(tab).append(tab).append("print(\"").append(ctx.getTokens(SimpleJavaParser.StringLiteral).stream().map(token -> token.getText().substring(1, token.getText().length() - 1)).collect(Collectors.joining(" + "))).append("\")\n");
+            pythonCode.append(tab).append("print(\"").append(ctx.getTokens(SimpleJavaParser.StringLiteral).stream().map(token -> token.getText().substring(1, token.getText().length() - 1)).collect(Collectors.joining(" + "))).append("\")\n");
             writer.write(pythonCode.toString());
+
         }
         else if (ctx.Identifier() != null) {
 //            writer.println(tab + tab +"print(" + ctx.Identifier().getText() + ")");
 //
-            pythonCode.append(tab).append(tab).append("print(").append(ctx.Identifier().getText()).append(")\n");
+            pythonCode.append(tab).append("print(").append(ctx.Identifier().getText()).append(")\n");
             writer.write(pythonCode.toString());
         }
 
@@ -89,7 +92,7 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
         String type = ctx.type().getText();
         String identifier = ctx.Identifier().getText();
         String expression = ctx.primaryExpression().getText();
-        pythonCode.append(tab).append(tab).append(identifier).append(" = ").append(expression).append("\n");
+        pythonCode.append(tab).append(identifier).append(" = ").append(expression).append("\n");
         writer.write(pythonCode.toString());
 //        writer.println(tab + tab + identifier + " = " + expression);
 
@@ -98,7 +101,7 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
     public void enterAssignmentStatement(SimpleJavaParser.AssignmentStatementContext ctx) {
         String identifier = ctx.Identifier().getText();
         String expression = ctx.expression().getText();
-        pythonCode.append(tab).append(identifier).append(" = ").append(expression).append("\n");
+        pythonCode.append(identifier).append(" = ").append(expression).append("\n");
         writer.write(pythonCode.toString());
 //        writer.println(tab + tab + identifier + " = " + expression);
 
@@ -134,7 +137,7 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
 
     @Override
     public void enterIncrementStatement(SimpleJavaParser.IncrementStatementContext ctx) {
-        pythonCode.append(tab).append(tab).append(ctx.Identifier().getText()).append(" += 1\n");
+        pythonCode.append(tab).append(ctx.Identifier().getText()).append(" += 1\n");
         writer.write(pythonCode.toString());
 //        writer.println(tab + tab +ctx.Identifier().getText() + " += 1");
 
@@ -144,35 +147,23 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
     @Override
     public void enterDecrementStatement(SimpleJavaParser.DecrementStatementContext ctx) {
 //        writer.println(tab + tab + ctx.Identifier().getText() + " -= 1");
-        pythonCode.append(tab).append(tab).append(ctx.Identifier().getText()).append(" -= 1\n");
+        pythonCode.append(tab).append(ctx.Identifier().getText()).append(" -= 1\n");
         writer.write(pythonCode.toString());
     }
 
     @Override public void enterIfStatement(SimpleJavaParser.IfStatementContext ctx) {
-        pythonCode.append(tab).append(tab).append(ctx.If()).append(" ").append(ctx.expression().logicalExpression().getText()).append(":\n");
+        pythonCode.append(tab).append(ctx.If()).append(" ").append(ctx.expression().logicalExpression().getText()).append(":\n");
         writer.write(pythonCode.toString());
     }
 
-    /*                                                                               RACZEJ W TEN SPOSOB TRZEBA DODAWAĆ TABY, A NIE RĘCZNIE WSZĘDZIE - do poprawy ~Kuba
     @Override public void enterStatement(SimpleJavaParser.StatementContext ctx) {
         pythonCode.append(tab);
     }
-    */
 
-/*
+
     @Override public void exitIfStatement(SimpleJavaParser.IfStatementContext ctx) {
         writer.println("\n");
     }
-
- */
-
-
-
-
-//    @Override
-//    public void enterIncrementStatement(SimpleJavaParser.IncrementStatementContext ctx) {
-//        pythonCode.append("    ").append(ctx.Identifier().getText()).append(" += 1\n");
-//    }
 
     public String getPythonCode() {
         return pythonCode.toString();
