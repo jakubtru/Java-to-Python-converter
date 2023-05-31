@@ -148,6 +148,26 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
         writer.write(pythonCode.toString());
     }
 
+    @Override public void enterIfStatement(SimpleJavaParser.IfStatementContext ctx) {
+        pythonCode.append(tab).append(tab).append(ctx.If()).append(" ").append(ctx.expression().logicalExpression().getText()).append(":\n");
+        writer.write(pythonCode.toString());
+    }
+
+    /*                                                                               RACZEJ W TEN SPOSOB TRZEBA DODAWAĆ TABY, A NIE RĘCZNIE WSZĘDZIE - do poprawy ~Kuba
+    @Override public void enterStatement(SimpleJavaParser.StatementContext ctx) {
+        pythonCode.append(tab);
+    }
+    */
+
+/*
+    @Override public void exitIfStatement(SimpleJavaParser.IfStatementContext ctx) {
+        writer.println("\n");
+    }
+
+ */
+
+
+
 
 //    @Override
 //    public void enterIncrementStatement(SimpleJavaParser.IncrementStatementContext ctx) {

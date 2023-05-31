@@ -108,7 +108,7 @@ assignmentStatement : Identifier Equals expression Semicolon | Identifier Equals
 
 printStatement : Print LeftParen (StringLiteral|Identifier) RightParen Semicolon;
 /* instrukcja warunkowa składa się z instrukcji if i opcjonalnej instrukcji else */
-ifStatement : If LeftParen expression RightParen LeftCurly statement RightCurly (Else LeftCurly statement RightCurly)?;
+ifStatement : If LeftParen expression RightParen LeftCurly statement+ RightCurly (Else LeftCurly statement RightCurly)?;
 
 /* instrukcja pętli składa się z instrukcji while, warunku i instrukcji pętli */
 whileStatement : While LeftParen expression RightParen statement;
