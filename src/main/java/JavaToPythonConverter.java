@@ -189,6 +189,19 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
         indentationLevel--;
     }
 
+    @Override public void enterWhileStatement(SimpleJavaParser.WhileStatementContext ctx) {
+        pythonCode.append(tab.repeat(Math.max(0, indentationLevel)));
+        pythonCode.append(ctx.While()).append(" ").append(ctx.expression().logicalExpression().getText()).append(":\n");
+        writer.write(pythonCode.toString());
+
+        indentationLevel++;
+    }
+
+    @Override public void exitWhileStatement(SimpleJavaParser.WhileStatementContext ctx) {
+        writer.println("\n");
+        indentationLevel--;
+    }
+
     public String getPythonCode() {
         return pythonCode.toString();
     }
