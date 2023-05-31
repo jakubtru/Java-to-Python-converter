@@ -111,7 +111,7 @@ printStatement : Print LeftParen (StringLiteral|Identifier) RightParen Semicolon
 ifStatement : If LeftParen expression RightParen LeftCurly statement+ RightCurly (Else LeftCurly statement RightCurly)?;
 
 /* instrukcja pętli składa się z instrukcji while, warunku i instrukcji pętli */
-whileStatement : While LeftParen expression RightParen LeftCurly statement RightCurly;
+whileStatement : While LeftParen expression RightParen LeftCurly statement+ RightCurly;
 
 /* instrukcja return może zwrócić wartość wyrażenia lub zakończyć funkcję */
 returnStatement : Return expression? Semicolon;
