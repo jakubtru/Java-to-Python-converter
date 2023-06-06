@@ -5,10 +5,16 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GUI extends JFrame implements ActionListener {
     private static final int FRAME_WIDTH = 1500;
@@ -16,6 +22,8 @@ public class GUI extends JFrame implements ActionListener {
 
     private JTextArea inTxtArea;
     private JTextArea outTxtArea;
+    private JTextArea inLineNumbersTextArea;
+    private JTextArea outLineNumbersTextArea;
     private JPanel start;
 
     public GUI() {
@@ -36,6 +44,13 @@ public class GUI extends JFrame implements ActionListener {
             repaint();
         } else if (e.getActionCommand().equals("Parse")) {
             String input = inTxtArea.getText();
+            String[] inputLines = input.split("\n");
+
+            StringBuilder numberedInput = new StringBuilder();
+            for (int i = 0; i < inputLines.length; i++) {
+                numberedInput.append(inputLines[i]).append("\n");
+            }
+
             CharStream inputCharStream = CharStreams.fromString(input);
             SimpleJavaLexer lexer = new SimpleJavaLexer(inputCharStream);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
@@ -47,7 +62,16 @@ public class GUI extends JFrame implements ActionListener {
                 converter = new JavaToPythonConverter("PythonCode.py");
                 walker.walk(converter, tree);
                 converter.close();
-                outTxtArea.setText(CharStreams.fromString(converter.getPythonCode()).toString());
+
+                String pythonCode = converter.getPythonCode();
+                String[] pythonLines = pythonCode.split("\n");
+                StringBuilder numberedPythonCode = new StringBuilder();
+                for (int i = 0; i < pythonLines.length; i++) {
+                    numberedPythonCode.append(pythonLines[i]).append("\n");
+                }
+
+                outTxtArea.setText(numberedPythonCode.toString());
+                inTxtArea.setText(numberedInput.toString());
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Conversion Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -64,35 +88,123 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private JPanel mainPanel() {
-        JPanel mainPanel = new JPanel();
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
         inTxtArea = new JTextArea();
         outTxtArea = new JTextArea();
+        inTxtArea.setBorder(BorderFactory.createEmptyBorder());
+        outTxtArea.setBorder(BorderFactory.createEmptyBorder());
+
         JPanel panel = new JPanel(new GridLayout(1, 2));
+        JScrollPane inScrollPane = new JScrollPane(inTxtArea);
+        JScrollPane outScrollPane = new JScrollPane(outTxtArea);
+
+        JPanel inLineNumbersPanel = new JPanel(new BorderLayout());
+        inLineNumbersTextArea = new JTextArea();
+        inLineNumbersTextArea.setEditable(false);
+        inLineNumbersTextArea.setBackground(new Color(240, 240, 240));
+        inLineNumbersTextArea.setBorder(BorderFactory.createEmptyBorder());
+
+        inScrollPane.setRowHeaderView(inLineNumbersPanel);
+        inLineNumbersPanel.add(inLineNumbersTextArea, BorderLayout.CENTER);
+
+        JPanel outLineNumbersPanel = new JPanel(new BorderLayout());
+        outLineNumbersTextArea = new JTextArea();
+        outLineNumbersTextArea.setEditable(false);
+        outLineNumbersTextArea.setBackground(new Color(240, 240, 240));
+        outLineNumbersTextArea.setBorder(BorderFactory.createEmptyBorder());
+
+        outScrollPane.setRowHeaderView(outLineNumbersPanel);
+        outLineNumbersPanel.add(outLineNumbersTextArea, BorderLayout.CENTER);
+
         JPanel inPanel = new JPanel(new BorderLayout());
         JPanel outPanel = new JPanel(new BorderLayout());
+
         inPanel.setBorder(BorderFactory.createTitledBorder("Input"));
         outPanel.setBorder(BorderFactory.createTitledBorder("Output"));
-        panel.add(inPanel, BorderLayout.WEST);
-        panel.add(outPanel, BorderLayout.EAST);
-        inPanel.add(inTxtArea, BorderLayout.CENTER);
-        outPanel.add(outTxtArea, BorderLayout.CENTER);
+
+        inPanel.add(inScrollPane, BorderLayout.CENTER);
+        outPanel.add(outScrollPane, BorderLayout.CENTER);
+
         JButton parseButton = new JButton("Parse");
         parseButton.addActionListener(this);
-        mainPanel.setLayout(new BorderLayout());
+
+        panel.add(inPanel, BorderLayout.WEST);
+        panel.add(outPanel, BorderLayout.EAST);
+
         mainPanel.add(panel, BorderLayout.CENTER);
         mainPanel.add(parseButton, BorderLayout.SOUTH);
+
+        inTxtArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateLineNumbers(inLineNumbersTextArea, inTxtArea);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateLineNumbers(inLineNumbersTextArea, inTxtArea);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateLineNumbers(inLineNumbersTextArea, inTxtArea);
+            }
+        });
+
+        outTxtArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateLineNumbers(outLineNumbersTextArea, outTxtArea);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateLineNumbers(outLineNumbersTextArea, outTxtArea);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateLineNumbers(outLineNumbersTextArea, outTxtArea);
+            }
+        });
+
         return mainPanel;
+    }
 
+    private void updateLineNumbers(JTextArea lineNumbersTextArea, JTextArea textArea) {
+        try {
+            int caretPosition = textArea.getDocument().getLength();
+            Rectangle caretRectangle = textArea.modelToView(caretPosition);
 
-//        JButton parseButton = new JButton("Parse");
-//        JLabel inLabel = new JLabel("Input");
-//        parseButton.addActionListener(this);
-//        mainPanel.setLayout(new BorderLayout());
-//        mainPanel.add(inLabel, BorderLayout.NORTH);
-//        mainPanel.add(inTxtArea, BorderLayout.CENTER);
-//        mainPanel.add(parseButton, BorderLayout.SOUTH);
-//        mainPanel.add(new JLabel("Output"), BorderLayout.WEST);
-//        mainPanel.add(outTxtArea, BorderLayout.EAST);
-//        return mainPanel;
+            int lineHeight = caretRectangle.height;
+            FontMetrics fontMetrics = textArea.getFontMetrics(textArea.getFont());
+            int fontAscent = fontMetrics.getAscent();
+
+            String[] lines = textArea.getText().split("\n");
+            int lineCount = lines.length;
+
+            List<String> lineNumbers = new ArrayList<>();
+            for (int i = 1; i <= lineCount; i++) {
+                lineNumbers.add(String.valueOf(i));
+            }
+
+            lineNumbersTextArea.setFont(textArea.getFont());
+            lineNumbersTextArea.setText(String.join("\n", lineNumbers));
+            lineNumbersTextArea.setSize(lineNumbersTextArea.getPreferredSize());
+            lineNumbersTextArea.setPreferredSize(new Dimension(lineNumbersTextArea.getPreferredSize().width, caretRectangle.y + lineHeight));
+
+            int lineNumbersWidth = lineNumbersTextArea.getPreferredSize().width + 5;
+            textArea.setBorder(BorderFactory.createEmptyBorder(0, lineNumbersWidth, 0, 0));
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new GUI();
+        });
     }
 }
