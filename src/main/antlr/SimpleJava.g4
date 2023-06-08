@@ -48,7 +48,6 @@ RightSquareBracket: ']';
 
 
 /* literały */
-
 IntegerLiteral : [0-9]+;
 FloatLiteral: Digit+ '.' Digit+;
 CharLiteral: '\'' ~('\'' | '\\') '\'';
@@ -60,6 +59,8 @@ fragment EscapeSequence: '\\' [btnfr"'\\"];
 
 /* identyfikatory */
 Identifier : [a-zA-Z_] [a-zA-Z_0-9]*;
+
+
 
 /* reguły */
 
@@ -77,12 +78,12 @@ classBodyDeclaration : (methodDeclaration | fieldDeclaration)*;
 
 
 /* Deklaracja pola składa się z typu, identyfikatora i średnika */
-fieldDeclaration : type Identifier Semicolon (fieldDeclaration|methodDeclaration)* | type  assignmentStatement (fieldDeclaration|methodDeclaration)*;
+fieldDeclaration : type Identifier Semicolon (fieldDeclaration|methodDeclaration)* | type assignmentStatement (fieldDeclaration|methodDeclaration)*;
 
 /* deklaracja metody main musi mieć określony zestaw argumentów i zwracać typ void */
-methodDeclaration : mainMethodDeclaration|normalMethodDeclaration;
+methodDeclaration : mainMethodDeclaration | normalMethodDeclaration;
 
-normalMethodDeclaration : Public? Static? (Void|Int|String|Char|Bool|Float) Identifier LeftParen  (Void|Int|String|Char|Bool|Float) Identifier (Comma (Void|Int|String|Char|Bool|Float) Identifier)*  RightParen methodBody;
+normalMethodDeclaration : Public? Static? (Void|Int|String|Char|Bool|Float) Identifier LeftParen (Void|Int|String|Char|Bool|Float) Identifier (Comma (Void|Int|String|Char|Bool|Float) Identifier)* RightParen methodBody;
 
 mainMethodDeclaration : Public Static Void Main LeftParen String LeftSquareBracket RightSquareBracket Identifier RightParen methodBody;
 
@@ -100,8 +101,7 @@ decrementStatement : Identifier Decrement Semicolon;
 
 declarationStatement : type Identifier Equals primaryExpression Semicolon;
 /* instrukcja składa się z przypisania, instrukcji warunkowej, instrukcji pętli, instrukcji return, wyrażenia, inkrementacji lub dekrementacji */
-statement : (declarationStatement | assignmentStatement | ifStatement | whileStatement | returnStatement | expressionStatement | incrementStatement | decrementStatement|printStatement);
-
+statement : (declarationStatement | assignmentStatement | ifStatement | whileStatement | returnStatement | expressionStatement | incrementStatement | decrementStatement | printStatement);
 
 /* przypisanie zmiennej wartości składa się z identyfikatora, znaku równości, wyrażenia i średnika */
 assignmentStatement : Identifier Equals expression Semicolon | Identifier Equals (CharLiteral|FloatLiteral|StringLiteral|IntegerLiteral|BoolLiteral)Semicolon;
@@ -130,3 +130,5 @@ mathExpression : unaryExpression ( ( '+' | '-' | '*' | '/' ) unaryExpression )*;
 unaryExpression : primaryExpression | ( ( '+' | '-' ) unaryExpression );
 
 primaryExpression : IntegerLiteral | FloatLiteral | CharLiteral | BoolLiteral | StringLiteral | Identifier | LeftParen expression RightParen;
+
+

@@ -1,6 +1,5 @@
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
@@ -55,6 +54,10 @@ public class GUI extends JFrame implements ActionListener {
             SimpleJavaLexer lexer = new SimpleJavaLexer(inputCharStream);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
             SimpleJavaParser parser = new SimpleJavaParser(tokens);
+
+            SimpleJavaErrorListener errorListener = new SimpleJavaErrorListener(inTxtArea);
+            parser.addErrorListener(errorListener);
+
             ParseTree tree = parser.compilationUnit();
             ParseTreeWalker walker = new ParseTreeWalker();
             JavaToPythonConverter converter;
@@ -208,3 +211,5 @@ public class GUI extends JFrame implements ActionListener {
         });
     }
 }
+
+

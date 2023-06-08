@@ -1,6 +1,11 @@
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.*;
 
+import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import java.awt.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -231,3 +236,33 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
 
 
 }
+
+class SimpleJavaErrorListener extends BaseErrorListener {
+    private JTextArea textArea;
+
+    public SimpleJavaErrorListener(JTextArea textArea) {
+        this.textArea = textArea;
+    }
+
+    @Override
+    public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
+        super.syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);
+
+        highlightLineWithError(line);
+
+        JOptionPane.showMessageDialog(null, "Błąd w linii " + line + ": " + msg, "Syntax Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void highlightLineWithError(int line) {
+        try {
+            int startOffset = textArea.getLineStartOffset(line - 1);
+            int endOffset = textArea.getLineEndOffset(line - 1);
+            textArea.getHighlighter().addHighlight(startOffset, endOffset, new DefaultHighlighter.DefaultHighlightPainter(Color.RED));
+        } catch (BadLocationException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+
+
+
