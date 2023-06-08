@@ -195,7 +195,7 @@ public class GUI extends JFrame implements ActionListener {
             lineNumbersTextArea.setSize(lineNumbersTextArea.getPreferredSize());
             lineNumbersTextArea.setPreferredSize(new Dimension(lineNumbersTextArea.getPreferredSize().width, caretRectangle.y + lineHeight));
 
-            int lineNumbersWidth = lineNumbersTextArea.getPreferredSize().width + 5;
+            int lineNumbersWidth = lineNumbersTextArea.getPreferredSize().width + 10;
             textArea.setBorder(BorderFactory.createEmptyBorder(0, lineNumbersWidth, 0, 0));
         } catch (BadLocationException ex) {
             ex.printStackTrace();

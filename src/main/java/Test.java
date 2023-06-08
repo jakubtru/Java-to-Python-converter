@@ -6,8 +6,9 @@ public class Test {
         x++;
         x--;
         System.out.println(s);
-        if(2==2) {
+        if(x==2) {
             System.out.println("TAK");
+            x--;
         }
     }
 

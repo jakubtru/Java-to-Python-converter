@@ -171,6 +171,7 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
 
     @Override
     public void enterIfStatement(SimpleJavaParser.IfStatementContext ctx) {
+        ctx.toString();
         pythonCode.append(tab.repeat(Math.max(0, indentationLevel)));
         pythonCode.append(ctx.If()).append(" ").append(ctx.expression().logicalExpression().getText()).append(":\n");
         writer.write(pythonCode.toString());
