@@ -83,7 +83,7 @@ fieldDeclaration : type Identifier Semicolon (fieldDeclaration|methodDeclaration
 /* deklaracja metody main musi mieć określony zestaw argumentów i zwracać typ void */
 methodDeclaration : mainMethodDeclaration | normalMethodDeclaration;
 
-normalMethodDeclaration : Public? Static? (Void|Int|String|Char|Bool|Float) Identifier LeftParen (Void|Int|String|Char|Bool|Float) Identifier (Comma (Void|Int|String|Char|Bool|Float) Identifier)* RightParen methodBody;
+normalMethodDeclaration : Public? Static? (Void|Int|String|Char|Bool|Float) Identifier LeftParen ((Void|Int|String|Char|Bool|Float) Identifier (Comma (Void|Int|String|Char|Bool|Float) Identifier)*)? RightParen methodBody;
 
 mainMethodDeclaration : Public Static Void Main LeftParen String LeftSquareBracket RightSquareBracket Identifier RightParen methodBody;
 
