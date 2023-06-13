@@ -13,8 +13,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +30,7 @@ public class GUI extends JFrame implements ActionListener {
 
     public GUI() throws IOException {
         super("Java to Python converter");
+        inTxtArea = new JTextArea();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
         start = startPanel();
@@ -47,7 +47,36 @@ public class GUI extends JFrame implements ActionListener {
             add(mainPanel(), BorderLayout.CENTER);
             revalidate();
             repaint();
-        } else if (e.getActionCommand().equals("Parse")) {
+            updateLineNumbers(inLineNumbersTextArea, inTxtArea);
+        }
+        else if (e.getActionCommand().equals("File Input")){
+            JFileChooser fileChooser = new JFileChooser();
+            int returnValue = fileChooser.showOpenDialog(this);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                try {
+                    BufferedReader reader = new BufferedReader(new FileReader(selectedFile));
+                    StringBuilder fileContent = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        fileContent.append(line).append("\n");
+                    }
+                    reader.close();
+                    if (start != null) {
+                        remove(start);
+                        start = null;
+                    }
+                    add(mainPanel(), BorderLayout.CENTER);
+                    revalidate();
+                    repaint();
+                    inTxtArea.setText(fileContent.toString());
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Error reading file: " + ex.getMessage(), "File Input Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+
+        else if (e.getActionCommand().equals("Parse")) {
             String input = inTxtArea.getText();
             String[] inputLines = input.split("\n");
 
@@ -85,12 +114,30 @@ public class GUI extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Conversion Error", JOptionPane.ERROR_MESSAGE);
             }
         }
+
+        else if (e.getActionCommand().equals("Exit")) {
+            System.exit(0);
+        }
+        else if (e.getActionCommand().equals("Save")){
+            JFileChooser fileChooser = new JFileChooser();
+            int returnValue = fileChooser.showSaveDialog(this);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                try {
+                    FileWriter writer = new FileWriter(selectedFile);
+                    writer.write(outTxtArea.getText());
+                    writer.close();
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Error writing file: " + ex.getMessage(), "File Output Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
     }
 
     private JPanel startPanel() throws IOException {
         JPanel startPanel = new JPanel(null);
         startPanel.setForeground(Color.gray);
-        startPanel.setBackground(new Color(71, 124, 163));
+        startPanel.setBackground(new Color(187, 184, 184));
 
         JButton startButton = new JButton("Manual Input");
         startButton.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -109,7 +156,7 @@ public class GUI extends JFrame implements ActionListener {
         welcomeText.setVisible(true);
         startPanel.add(welcomeText);
 
-        String path = "C://Users//jtrus//Desktop//Java-to-Python-converter//src//main//java//JavaToPython.png";
+        String path = "src/main/java/JavaToPython.png";
         File file = new File(path);
         BufferedImage image = ImageIO.read(file);
         JLabel logo = new JLabel(new ImageIcon(image));
@@ -120,7 +167,8 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private JPanel mainPanel() {
-        JPanel mainPanel = new JPanel(new BorderLayout());
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         inTxtArea = new JTextArea();
@@ -156,17 +204,34 @@ public class GUI extends JFrame implements ActionListener {
         inPanel.setBorder(BorderFactory.createTitledBorder("Input"));
         outPanel.setBorder(BorderFactory.createTitledBorder("Output"));
 
+        inPanel.setPreferredSize(new Dimension(FRAME_WIDTH / 2, FRAME_HEIGHT - 50));
+        outPanel.setPreferredSize(new Dimension(FRAME_WIDTH / 2, FRAME_HEIGHT - 50));
+
         inPanel.add(inScrollPane, BorderLayout.CENTER);
         outPanel.add(outScrollPane, BorderLayout.CENTER);
 
         JButton parseButton = new JButton("Parse");
+        JButton exitButton = new JButton("Exit");
+//        JButton menuButton = new JButton("Menu");
+        JButton saveButton = new JButton("Save");
         parseButton.addActionListener(this);
+        exitButton.addActionListener(this);
+//        menuButton.addActionListener(this);
+        saveButton.addActionListener(this);
 
         panel.add(inPanel, BorderLayout.WEST);
         panel.add(outPanel, BorderLayout.EAST);
 
-        mainPanel.add(panel, BorderLayout.CENTER);
-        mainPanel.add(parseButton, BorderLayout.SOUTH);
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
+        buttonPanel.add(parseButton);
+        buttonPanel.add(saveButton);
+        buttonPanel.add(exitButton);
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+
+        mainPanel.add(panel);
+        mainPanel.add(Box.createVerticalStrut(5));
+        mainPanel.add(buttonPanel);
 
         inTxtArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
