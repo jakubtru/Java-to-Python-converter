@@ -3,6 +3,7 @@ import org.antlr.v4.runtime.misc.Interval;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
@@ -11,6 +12,8 @@ import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,18 +28,21 @@ public class GUI extends JFrame implements ActionListener {
     private JTextArea outLineNumbersTextArea;
     private JPanel start;
 
-    public GUI() {
+
+    public GUI() throws IOException {
         super("Java to Python converter");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
         start = startPanel();
-        add(start, BorderLayout.CENTER);
+        start.setBounds(0,0,1500,500);
+        add(start);
+
         setVisible(true);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand().equals("Start")) {
+        if (e.getActionCommand().equals("Manual Input")) {
             remove(start);
             add(mainPanel(), BorderLayout.CENTER);
             revalidate();
@@ -81,11 +87,34 @@ public class GUI extends JFrame implements ActionListener {
         }
     }
 
-    private JPanel startPanel() {
-        JPanel startPanel = new JPanel();
-        JButton startButton = new JButton("Start");
+    private JPanel startPanel() throws IOException {
+        JPanel startPanel = new JPanel(null);
+        startPanel.setForeground(Color.gray);
+        startPanel.setBackground(new Color(71, 124, 163));
+
+        JButton startButton = new JButton("Manual Input");
+        startButton.setFont(new Font("Arial", Font.PLAIN, 15));
+        startButton.setBounds(150,100,500,50);
         startButton.addActionListener(this);
-        startPanel.add(startButton, BorderLayout.CENTER);
+        startPanel.add(startButton);
+
+        JButton startButton2 = new JButton("File Input");
+        startButton2.setFont(new Font("Arial", Font.PLAIN, 15));
+        startButton2.setBounds(150,200,500,50);
+        startButton2.addActionListener(this);
+        startPanel.add(startButton2);
+
+        JLabel welcomeText = new JLabel("<html><div style='text-align: left;'>&nbsp;&nbsp;Thank you for choosing our Java to Python Converter powered by Antler 4.0. <br/>&nbsp;&nbsp;This powerful tool is designed to simplify the process of converting Java code to Python, <br/>&nbsp;&nbsp;helping you seamlessly transition between the two programming languages. <br/><br/>&nbsp;&nbsp;Whether you're a Java developer looking to explore Python or a project that requires code migration, our converter is here to assist you. <br/>&nbsp;&nbsp;With the advanced capabilities of Antler 4.0, you can expect accurate and efficient conversion results.    <br></div></html>");
+        welcomeText.setBounds(10,150,900,500);
+        welcomeText.setVisible(true);
+        startPanel.add(welcomeText);
+
+        String path = "C://Users//jtrus//Desktop//Java-to-Python-converter//src//main//java//JavaToPython.png";
+        File file = new File(path);
+        BufferedImage image = ImageIO.read(file);
+        JLabel logo = new JLabel(new ImageIcon(image));
+        logo.setBounds(750,30,900,400);
+        startPanel.add(logo);
 
         return startPanel;
     }
@@ -207,7 +236,11 @@ public class GUI extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new GUI();
+            try {
+                new GUI();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 }
