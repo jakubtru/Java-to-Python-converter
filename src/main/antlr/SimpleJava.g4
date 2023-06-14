@@ -106,7 +106,8 @@ statement : (declarationStatement | assignmentStatement | ifStatement | whileSta
 /* przypisanie zmiennej wartości składa się z identyfikatora, znaku równości, wyrażenia i średnika */
 assignmentStatement : Identifier Equals expression Semicolon | Identifier Equals (CharLiteral|FloatLiteral|StringLiteral|IntegerLiteral|BoolLiteral)Semicolon;
 
-printStatement : Print LeftParen (StringLiteral|Identifier) RightParen Semicolon;
+printStatement : Print LeftParen (StringLiteral | Identifier | (StringLiteral Identifier)) RightParen Semicolon;
+
 /* instrukcja warunkowa składa się z instrukcji if i opcjonalnej instrukcji else */
 ifStatement : If LeftParen expression RightParen LeftCurly statement+ RightCurly (Else LeftCurly statement+ RightCurly)?;
 

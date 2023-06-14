@@ -19,6 +19,7 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
     private final PrintWriter writer;
     private final String tab = "    ";
     private int indentationLevel = 0;
+    private StringBuilder mainMethodCode = new StringBuilder();
 
     public JavaToPythonConverter(String outputFileName) throws IOException {
         writer = new PrintWriter(new FileWriter(outputFileName));
@@ -58,7 +59,7 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
     public void enterMainMethodDeclaration(SimpleJavaParser.MainMethodDeclarationContext ctx) {
 //        writer.println(tab + "def main(args):");
         pythonCode.append(tab).append("def main(args):\n");
-        writer.write(pythonCode.toString());
+        writer.write(pythonCode.toString()+"\n");
         indentationLevel++;
     }
 
@@ -73,14 +74,14 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
             }
             parent = parent.getParent();
         }
-        assert parent != null;
-        String className = ((SimpleJavaParser.ClassDeclarationContext) parent).Identifier().getText();
+        assert classCtx != null;
+        String className = classCtx.Identifier().getText();
+        pythonCode.append("\n");
+        mainMethodCode.append("\nif __name__ == \"__main__\":\n" + "    " + className + ".main(sys.argv[1:])");
+    }
 
-//        writer.println("\nif __name__ == \"__main__\":\n" + "    " + className + ".main(sys.argv[1:])");
-//
-        pythonCode.append("\nif __name__ == \"__main__\":\n" + "    " + className + ".main(sys.argv[1:])");
-        writer.write(pythonCode.toString());
-        indentationLevel--;
+    @Override public void exitCompilationUnit(SimpleJavaParser.CompilationUnitContext ctx) {
+        pythonCode.append(mainMethodCode);
     }
 
     @Override
@@ -226,6 +227,19 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
         indentationLevel--;
     }
 
+    @Override
+    public void enterReturnStatement(SimpleJavaParser.ReturnStatementContext ctx) {
+        ctx.toString();
+        pythonCode.append(tab.repeat(Math.max(0, indentationLevel)));
+        pythonCode.append("return ").append(ctx.expression().getText()).append("\n");
+        writer.write(pythonCode.toString());
+    }
+
+
+
+
+
+
     public void close() {
         writer.close();
     }
@@ -236,6 +250,7 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
 
 
 }
+
 
 class SimpleJavaErrorListener extends BaseErrorListener {
     private JTextArea textArea;
