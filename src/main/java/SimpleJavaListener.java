@@ -177,6 +177,26 @@ public interface SimpleJavaListener extends ParseTreeListener {
 	 */
 	void exitIfStatement(SimpleJavaParser.IfStatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SimpleJavaParser#elseIfStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterElseIfStatement(SimpleJavaParser.ElseIfStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpleJavaParser#elseIfStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitElseIfStatement(SimpleJavaParser.ElseIfStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SimpleJavaParser#elseStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterElseStatement(SimpleJavaParser.ElseStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpleJavaParser#elseStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitElseStatement(SimpleJavaParser.ElseStatementContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SimpleJavaParser#whileStatement}.
 	 * @param ctx the parse tree
 	 */
@@ -266,4 +286,14 @@ public interface SimpleJavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPrimaryExpression(SimpleJavaParser.PrimaryExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SimpleJavaParser#printExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrintExpression(SimpleJavaParser.PrintExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpleJavaParser#printExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrintExpression(SimpleJavaParser.PrintExpressionContext ctx);
 }

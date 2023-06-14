@@ -1,4 +1,4 @@
-// Generated from C:/Users/jtrus/Desktop/Java-to-Python-converter/src/main/antlr\SimpleJava.g4 by ANTLR 4.12.0
+// Generated from /Users/jangi/IdeaProjects/Java-to-Python-converter/src/main/antlr/SimpleJava.g4 by ANTLR 4.12.0
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**

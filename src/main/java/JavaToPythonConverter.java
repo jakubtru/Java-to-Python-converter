@@ -12,6 +12,8 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.ArrayList;
 
 public class JavaToPythonConverter extends SimpleJavaBaseListener {
 
@@ -19,6 +21,7 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
     private final PrintWriter writer;
     private final String tab = "    ";
     private int indentationLevel = 0;
+    private StringBuilder mainMethodCode = new StringBuilder();
 
     public JavaToPythonConverter(String outputFileName) throws IOException {
         writer = new PrintWriter(new FileWriter(outputFileName));
@@ -58,7 +61,7 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
     public void enterMainMethodDeclaration(SimpleJavaParser.MainMethodDeclarationContext ctx) {
 //        writer.println(tab + "def main(args):");
         pythonCode.append(tab).append("def main(args):\n");
-        writer.write(pythonCode.toString());
+        writer.write(pythonCode.toString()+"\n");
         indentationLevel++;
     }
 
@@ -73,33 +76,54 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
             }
             parent = parent.getParent();
         }
-        assert parent != null;
-        String className = ((SimpleJavaParser.ClassDeclarationContext) parent).Identifier().getText();
+        assert classCtx != null;
+        String className = classCtx.Identifier().getText();
+        pythonCode.append("\n");
+        mainMethodCode.append("\nif __name__ == \"__main__\":\n" + "    " + className + ".main(sys.argv[1:])");
+    }
 
-//        writer.println("\nif __name__ == \"__main__\":\n" + "    " + className + ".main(sys.argv[1:])");
-//
-        pythonCode.append("\nif __name__ == \"__main__\":\n" + "    " + className + ".main(sys.argv[1:])");
-        writer.write(pythonCode.toString());
-        indentationLevel--;
+    @Override public void exitCompilationUnit(SimpleJavaParser.CompilationUnitContext ctx) {
+        pythonCode.append(mainMethodCode);
     }
 
     @Override
     public void enterPrintStatement(SimpleJavaParser.PrintStatementContext ctx) {
-        if (ctx.StringLiteral() != null) {
-//            writer.println(tab + tab + "print(\"" + ctx.getTokens(SimpleJavaParser.StringLiteral).stream().map(token -> token.getText().substring(1, token.getText().length() - 1)).collect(Collectors.joining(" + ")) + "\")");
-//
-            pythonCode.append(tab.repeat(Math.max(0, indentationLevel)));
-            pythonCode.append("print(\"").append(ctx.getTokens(SimpleJavaParser.StringLiteral).stream().map(token -> token.getText().substring(1, token.getText().length() - 1)).collect(Collectors.joining(" + "))).append("\")\n");
-            writer.write(pythonCode.toString());
-
-        } else if (ctx.Identifier() != null) {
-//            writer.println(tab + tab +"print(" + ctx.Identifier().getText() + ")");
-            pythonCode.append(tab.repeat(Math.max(0, indentationLevel)));
-            pythonCode.append("print(").append(ctx.Identifier().getText()).append(")\n");
-            writer.write(pythonCode.toString());
-        }
-
+        SimpleJavaParser.PrintExpressionContext printExprCtx = ctx.printExpression();
+        String pythonPrintCode = generatePythonPrintCode(printExprCtx);
+        pythonCode.append(tab.repeat(Math.max(0, indentationLevel)));
+        pythonCode.append("print(").append(pythonPrintCode).append(")\n");
+        writer.write(pythonCode.toString());
     }
+
+    private String generatePythonPrintCode(SimpleJavaParser.PrintExpressionContext ctx) {
+        if (ctx.StringLiteral() != null) {
+            return ctx.StringLiteral().getText();
+        } else if (ctx.Identifier() != null) {
+            return ctx.Identifier().getText();
+        } else if (ctx.getChildCount() == 3) {
+            SimpleJavaParser.PrintExpressionContext leftExpr = ctx.printExpression();
+            SimpleJavaParser.PrintExpressionContext rightExpr = ctx.getChild(SimpleJavaParser.PrintExpressionContext.class, 2);
+            String leftCode = generatePythonPrintCode(leftExpr);
+            String rightCode = generatePythonPrintCode(rightExpr);
+            return leftCode + " + " + rightCode;
+        } else {
+            List<ParseTree> children = ctx.children;
+            List<String> expressions = new ArrayList<>();
+            for (ParseTree child : children) {
+                if (child instanceof SimpleJavaParser.PrintExpressionContext) {
+                    expressions.add(generatePythonPrintCode((SimpleJavaParser.PrintExpressionContext) child));
+                }
+            }
+            return String.join(" + ", expressions);
+        }
+    }
+
+
+
+
+
+
+
 
     @Override
     public void enterDeclarationStatement(SimpleJavaParser.DeclarationStatementContext ctx) {
@@ -226,6 +250,19 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
         indentationLevel--;
     }
 
+    @Override
+    public void enterReturnStatement(SimpleJavaParser.ReturnStatementContext ctx) {
+        ctx.toString();
+        pythonCode.append(tab.repeat(Math.max(0, indentationLevel)));
+        pythonCode.append("return ").append(ctx.expression().getText()).append("\n");
+        writer.write(pythonCode.toString());
+    }
+
+
+
+
+
+
     public void close() {
         writer.close();
     }
@@ -236,6 +273,7 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
 
 
 }
+
 
 class SimpleJavaErrorListener extends BaseErrorListener {
     private JTextArea textArea;

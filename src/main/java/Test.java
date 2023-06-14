@@ -12,9 +12,17 @@ public class Test {
         }
     }
 
+
     public static void main(String[] args) {
         System.out.println("Hello World");
     }
+    public int dasd(int a){
+        return a*a;
+    }
+    public int dsd(int a){
+        return a*a+1;
+    }
+
 }
 
 

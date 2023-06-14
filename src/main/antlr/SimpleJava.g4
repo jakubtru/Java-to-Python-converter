@@ -14,6 +14,7 @@ Float: 'float';
 Extends : 'extends';
 Return : 'return';
 If : 'if';
+ElseIf : 'else if';
 Else : 'else';
 While : 'while';
 Print : 'System.out.println';
@@ -68,7 +69,7 @@ Identifier : [a-zA-Z_] [a-zA-Z_0-9]*;
 compilationUnit : classDeclaration* EOF;
 
 /* deklaracja składa się z słowa kluczowego 'class', identyfikatora klasy i ciała klasy */
-classDeclaration : Public Class Identifier classBody;
+classDeclaration : Public? Class Identifier classBody;
 
 /* ciało klasy jest otoczone klamrami i składa się z deklaracji pól i metod*/
 classBody : LeftCurly classBodyDeclaration (RightCurly | RightCurly);
@@ -106,9 +107,14 @@ statement : (declarationStatement | assignmentStatement | ifStatement | whileSta
 /* przypisanie zmiennej wartości składa się z identyfikatora, znaku równości, wyrażenia i średnika */
 assignmentStatement : Identifier Equals expression Semicolon | Identifier Equals (CharLiteral|FloatLiteral|StringLiteral|IntegerLiteral|BoolLiteral)Semicolon;
 
-printStatement : Print LeftParen (StringLiteral|Identifier) RightParen Semicolon;
+printStatement : Print LeftParen printExpression RightParen Semicolon;
+
 /* instrukcja warunkowa składa się z instrukcji if i opcjonalnej instrukcji else */
-ifStatement : If LeftParen expression RightParen LeftCurly statement+ RightCurly (Else LeftCurly statement+ RightCurly)?;
+ifStatement : If LeftParen expression RightParen LeftCurly statement+ RightCurly elseIfStatement* elseStatement?;
+
+elseIfStatement : ElseIf LeftParen expression RightParen LeftCurly statement+ RightCurly;
+
+elseStatement: Else LeftCurly statement+ RightCurly;
 
 /* instrukcja pętli składa się z instrukcji while, warunku i instrukcji pętli */
 whileStatement : While LeftParen expression RightParen LeftCurly statement+ RightCurly;
@@ -130,5 +136,8 @@ mathExpression : unaryExpression ( ( '+' | '-' | '*' | '/' ) unaryExpression )*;
 unaryExpression : primaryExpression | ( ( '+' | '-' ) unaryExpression );
 
 primaryExpression : IntegerLiteral | FloatLiteral | CharLiteral | BoolLiteral | StringLiteral | Identifier | LeftParen expression RightParen;
+
+printExpression : StringLiteral | Identifier | printExpression Plus (StringLiteral | Identifier);
+
 
 
