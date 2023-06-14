@@ -287,13 +287,11 @@ public class GUI extends JFrame implements ActionListener {
                 lineNumbers.add(String.valueOf(i));
             }
 
-            lineNumbersTextArea.setFont(textArea.getFont());
-            lineNumbersTextArea.setText(String.join("\n", lineNumbers));
-            lineNumbersTextArea.setSize(lineNumbersTextArea.getPreferredSize());
-            lineNumbersTextArea.setPreferredSize(new Dimension(lineNumbersTextArea.getPreferredSize().width, caretRectangle.y + lineHeight));
+            String lineNumberText = String.join("\n", lineNumbers);
+            lineNumbersTextArea.setText(lineNumberText);
 
-            int lineNumbersWidth = lineNumbersTextArea.getPreferredSize().width + 10;
-            textArea.setBorder(BorderFactory.createEmptyBorder(0, lineNumbersWidth, 0, 0));
+            int preferredWidth = Math.max(25, fontMetrics.stringWidth(String.valueOf(lineCount + 1)));
+            lineNumbersTextArea.setPreferredSize(new Dimension(preferredWidth, caretRectangle.y + fontAscent));
         } catch (BadLocationException ex) {
             ex.printStackTrace();
         }
@@ -309,5 +307,3 @@ public class GUI extends JFrame implements ActionListener {
         });
     }
 }
-
-

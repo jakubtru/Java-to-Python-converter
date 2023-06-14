@@ -91,15 +91,15 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
         SimpleJavaParser.PrintExpressionContext printExprCtx = ctx.printExpression();
         String pythonPrintCode = generatePythonPrintCode(printExprCtx);
         pythonCode.append(tab.repeat(Math.max(0, indentationLevel)));
-        pythonCode.append("print(").append(pythonPrintCode).append(")\n");
+        pythonCode.append(pythonPrintCode).append("\n");
         writer.write(pythonCode.toString());
     }
 
     private String generatePythonPrintCode(SimpleJavaParser.PrintExpressionContext ctx) {
         if (ctx.StringLiteral() != null) {
-            return ctx.StringLiteral().getText();
+            return "print(" + ctx.StringLiteral().getText() + ")";
         } else if (ctx.Identifier() != null) {
-            return ctx.Identifier().getText();
+            return "print(" + ctx.Identifier().getText() + ")";
         } else if (ctx.getChildCount() == 3) {
             SimpleJavaParser.PrintExpressionContext leftExpr = ctx.printExpression();
             SimpleJavaParser.PrintExpressionContext rightExpr = ctx.getChild(SimpleJavaParser.PrintExpressionContext.class, 2);
@@ -113,10 +113,15 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
                 if (child instanceof SimpleJavaParser.PrintExpressionContext) {
                     expressions.add(generatePythonPrintCode((SimpleJavaParser.PrintExpressionContext) child));
                 }
+
             }
+            System.out.println(String.join(" + ", expressions));
             return String.join(" + ", expressions);
         }
     }
+
+
+
 
 
 
@@ -310,6 +315,10 @@ class SimpleJavaErrorListener extends BaseErrorListener {
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
         super.syntaxError(recognizer, offendingSymbol, line, charPositionInLine, msg, e);
 
+        if (offendingSymbol instanceof SimpleJavaParser) {
+            line--;
+        }
+
         highlightLineWithError(line);
 
         JOptionPane.showMessageDialog(null, "Błąd w linii " + line + ": " + msg, "Syntax Error", JOptionPane.ERROR_MESSAGE);
@@ -325,6 +334,10 @@ class SimpleJavaErrorListener extends BaseErrorListener {
         }
     }
 }
+
+
+
+
 
 
 
