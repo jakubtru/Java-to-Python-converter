@@ -2,240 +2,172 @@ import sys
 
 import sys
 
-class Test:
+class PodstawoweOperacjeMatematyczne:
 import sys
 
-class Test:
-    slowo = ""
-import sys
-
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-import sys
-
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-import sys
-
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-        x += 1
-import sys
-
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-        x += 1
-        x -= 1
-import sys
-
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-        x += 1
-        x -= 1
-        print(s)
-import sys
-
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-        x += 1
-        x -= 1
-        print(s)
-        if x==2:
-import sys
-
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-        x += 1
-        x -= 1
-        print(s)
-        if x==2:
-            print("siema")
-import sys
-
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-        x += 1
-        x -= 1
-        print(s)
-        if x==2:
-            print("siema")
-            x -= 1
-
-
-import sys
-
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-        x += 1
-        x -= 1
-        print(s)
-        if x==2:
-            print("siema")
-            x -= 1
-
-import sys
-
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-        x += 1
-        x -= 1
-        print(s)
-        if x==2:
-            print("siema")
-            x -= 1
-
+class PodstawoweOperacjeMatematyczne:
     def main(args):
 
 import sys
 
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-        x += 1
-        x -= 1
-        print(s)
-        if x==2:
-            print("siema")
-            x -= 1
-
+class PodstawoweOperacjeMatematyczne:
     def main(args):
-        print("Hello World")
+        liczba1 = 5
 import sys
 
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-        x += 1
-        x -= 1
-        print(s)
-        if x==2:
-            print("siema")
-            x -= 1
-
+class PodstawoweOperacjeMatematyczne:
     def main(args):
-        print("Hello World")
-
-    def dasd(self, a):
+        liczba1 = 5
+        liczba2 = 10
 import sys
 
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-        x += 1
-        x -= 1
-        print(s)
-        if x==2:
-            print("siema")
-            x -= 1
-
+class PodstawoweOperacjeMatematyczne:
     def main(args):
-        print("Hello World")
-
-    def dasd(self, a):
-            return a*a
+        liczba1 = 5
+        liczba2 = 10
+        suma = 0
 import sys
 
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-        x += 1
-        x -= 1
-        print(s)
-        if x==2:
-            print("siema")
-            x -= 1
-
+class PodstawoweOperacjeMatematyczne:
     def main(args):
-        print("Hello World")
-
-    def dasd(self, a):
-            return a*a
-
+        liczba1 = 5
+        liczba2 = 10
+        suma = 0
+        roznica = 0
 import sys
 
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-        x += 1
-        x -= 1
-        print(s)
-        if x==2:
-            print("siema")
-            x -= 1
-
+class PodstawoweOperacjeMatematyczne:
     def main(args):
-        print("Hello World")
-
-    def dasd(self, a):
-            return a*a
-
-    def dsd(self, a):
+        liczba1 = 5
+        liczba2 = 10
+        suma = 0
+        roznica = 0
+        iloczyn = 0
 import sys
 
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-        x += 1
-        x -= 1
-        print(s)
-        if x==2:
-            print("siema")
-            x -= 1
-
+class PodstawoweOperacjeMatematyczne:
     def main(args):
-        print("Hello World")
-
-    def dasd(self, a):
-            return a*a
-
-    def dsd(self, a):
-            return a*a+1
+        liczba1 = 5
+        liczba2 = 10
+        suma = 0
+        roznica = 0
+        iloczyn = 0
+        liczba3 = 3.0
 import sys
 
-class Test:
-    slowo = ""
-    def funkcja(self, s):
-        x = 5
-        x += 1
-        x -= 1
-        print(s)
-        if x==2:
-            print("siema")
-            x -= 1
-
+class PodstawoweOperacjeMatematyczne:
     def main(args):
-        print("Hello World")
+        liczba1 = 5
+        liczba2 = 10
+        suma = 0
+        roznica = 0
+        iloczyn = 0
+        liczba3 = 3.0
+        liczba4 = 2
+import sys
 
-    def dasd(self, a):
-            return a*a
+class PodstawoweOperacjeMatematyczne:
+    def main(args):
+        liczba1 = 5
+        liczba2 = 10
+        suma = 0
+        roznica = 0
+        iloczyn = 0
+        liczba3 = 3.0
+        liczba4 = 2
+        liczba1 += 1
+import sys
 
-    def dsd(self, a):
-            return a*a+1
+class PodstawoweOperacjeMatematyczne:
+    def main(args):
+        liczba1 = 5
+        liczba2 = 10
+        suma = 0
+        roznica = 0
+        iloczyn = 0
+        liczba3 = 3.0
+        liczba4 = 2
+        liczba1 += 1
+        liczba2 -= 1
+import sys
 
+class PodstawoweOperacjeMatematyczne:
+    def main(args):
+        liczba1 = 5
+        liczba2 = 10
+        suma = 0
+        roznica = 0
+        iloczyn = 0
+        liczba3 = 3.0
+        liczba4 = 2
+        liczba1 += 1
+        liczba2 -= 1
+        suma = liczba1+liczba2
+import sys
+
+class PodstawoweOperacjeMatematyczne:
+    def main(args):
+        liczba1 = 5
+        liczba2 = 10
+        suma = 0
+        roznica = 0
+        iloczyn = 0
+        liczba3 = 3.0
+        liczba4 = 2
+        liczba1 += 1
+        liczba2 -= 1
+        suma = liczba1+liczba2
+        roznica = liczba2-liczba1
+import sys
+
+class PodstawoweOperacjeMatematyczne:
+    def main(args):
+        liczba1 = 5
+        liczba2 = 10
+        suma = 0
+        roznica = 0
+        iloczyn = 0
+        liczba3 = 3.0
+        liczba4 = 2
+        liczba1 += 1
+        liczba2 -= 1
+        suma = liczba1+liczba2
+        roznica = liczba2-liczba1
+        iloczyn = liczba3*liczba4
+import sys
+
+class PodstawoweOperacjeMatematyczne:
+    def main(args):
+        liczba1 = 5
+        liczba2 = 10
+        suma = 0
+        roznica = 0
+        iloczyn = 0
+        liczba3 = 3.0
+        liczba4 = 2
+        liczba1 += 1
+        liczba2 -= 1
+        suma = liczba1+liczba2
+        roznica = liczba2-liczba1
+        iloczyn = liczba3*liczba4
+        iloraz = liczba3/liczba4
+import sys
+
+class PodstawoweOperacjeMatematyczne:
+    def main(args):
+        liczba1 = 5
+        liczba2 = 10
+        suma = 0
+        roznica = 0
+        iloczyn = 0
+        liczba3 = 3.0
+        liczba4 = 2
+        liczba1 += 1
+        liczba2 -= 1
+        suma = liczba1+liczba2
+        roznica = liczba2-liczba1
+        iloczyn = liczba3*liczba4
+        iloraz = liczba3/liczba4
+        print(suma)
 
 
