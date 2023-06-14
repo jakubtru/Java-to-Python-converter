@@ -143,6 +143,11 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
     public void enterAssignmentStatement(SimpleJavaParser.AssignmentStatementContext ctx) {
         String identifier = ctx.Identifier().getText();
         String expression = ctx.expression().getText();
+
+
+        pythonCode.append(tab.repeat(Math.max(0, indentationLevel)));
+
+
         pythonCode.append(identifier).append(" = ").append(expression).append("\n");
         writer.write(pythonCode.toString());
 //        writer.println(tab + tab + identifier + " = " + expression);
@@ -199,6 +204,11 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
     }
 
     @Override
+    public void enterStatement(SimpleJavaParser.StatementContext ctx) {
+        //pythonCode.append(tab.repeat(Math.max(0, indentationLevel)));
+    }
+
+    @Override
     public void enterIfStatement(SimpleJavaParser.IfStatementContext ctx) {
         ctx.toString();
         pythonCode.append(tab.repeat(Math.max(0, indentationLevel)));
@@ -208,16 +218,30 @@ public class JavaToPythonConverter extends SimpleJavaBaseListener {
     }
 
     @Override
-    public void enterStatement(SimpleJavaParser.StatementContext ctx) {
-        //pythonCode.append(tab.repeat(Math.max(0, indentationLevel)));
-    }
-
-
-    @Override
     public void exitIfStatement(SimpleJavaParser.IfStatementContext ctx) {
         writer.println("\n");
         indentationLevel--;
     }
+
+    @Override
+    public void enterElseIfStatement(SimpleJavaParser.ElseIfStatementContext ctx) {
+        pythonCode.append(tab.repeat(Math.max(0, indentationLevel-1)));
+        pythonCode.append(ctx.ElseIf()).append(" ").append(ctx.expression().logicalExpression().getText()).append(":\n");
+        writer.write(pythonCode.toString());
+    }
+
+    @Override
+    public void exitElseIfStatement(SimpleJavaParser.ElseIfStatementContext ctx) { }
+
+    @Override
+    public void enterElseStatement(SimpleJavaParser.ElseStatementContext ctx) {
+        pythonCode.append(tab.repeat(Math.max(0, indentationLevel-1)));
+        pythonCode.append(ctx.Else()).append(":\n");
+        writer.write(pythonCode.toString());
+    }
+
+    @Override
+    public void exitElseStatement(SimpleJavaParser.ElseStatementContext ctx) { }
 
     @Override public void enterWhileStatement(SimpleJavaParser.WhileStatementContext ctx) {
         pythonCode.append(tab.repeat(Math.max(0, indentationLevel)));
