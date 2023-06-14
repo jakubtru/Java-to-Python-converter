@@ -151,7 +151,7 @@ public class GUI extends JFrame implements ActionListener {
         startButton2.addActionListener(this);
         startPanel.add(startButton2);
 
-        JLabel welcomeText = new JLabel("<html><div style='text-align: left;'>&nbsp;&nbsp;Thank you for choosing our Java to Python Converter powered by Antler 4.0. <br/>&nbsp;&nbsp;This powerful tool is designed to simplify the process of converting Java code to Python, <br/>&nbsp;&nbsp;helping you seamlessly transition between the two programming languages. <br/><br/>&nbsp;&nbsp;Whether you're a Java developer looking to explore Python or a project that requires code migration, our converter is here to assist you. <br/>&nbsp;&nbsp;With the advanced capabilities of Antler 4.0, you can expect accurate and efficient conversion results.    <br></div></html>");
+        JLabel welcomeText = new JLabel("<html><div style='text-align: left;'>&nbsp;&nbsp;Thank you for choosing our Java to Python Converter powered by ANTLR 4.0. <br/>&nbsp;&nbsp;This powerful tool is designed to simplify the process of converting Java code to Python, <br/>&nbsp;&nbsp;helping you seamlessly transition between the two programming languages. <br/><br/>&nbsp;&nbsp;Whether you're a Java developer looking to explore Python or a project that requires code migration, our converter is here to assist you. <br/>&nbsp;&nbsp;With the advanced capabilities of Antler 4.0, you can expect accurate and efficient conversion results.    <br></div></html>");
         welcomeText.setBounds(10,150,900,500);
         welcomeText.setVisible(true);
         startPanel.add(welcomeText);
